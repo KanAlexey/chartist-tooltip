@@ -81,8 +81,20 @@
             txt.innerHTML = meta;
             meta = txt.value;
           }
-
-          meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
+          if(meta) {
+              var newMeta = JSON.parse(meta.replace(/&quot;/g, '\"'));
+          }
+            if(typeof newMeta === "object"){
+                var metaItem = '';
+                var titles = Object.keys(newMeta.data);
+                var count = Object.values(newMeta.data);
+                titles.forEach(function(title, index) {
+                    metaItem += '<span class="chartist-tooltip-meta-item">' + title + ' ' + count[index] + '</span>';
+                });
+                meta = '<div class="chartist-tooltip-meta">' + metaItem + '</div>';
+            } else {
+                meta = '<div class="chartist-tooltip-meta">' + meta + '</div>';
+            }
 
           if (hasMeta) {
             tooltipText += meta + '<br>';
